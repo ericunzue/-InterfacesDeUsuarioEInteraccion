@@ -17,8 +17,8 @@
    <header class="">
       <nav class="navbar navbar-light bg-dark ml-auto">
          <form class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success mx-2" type="button">Dibujar</button>
-            <button class="btn btn-outline-success ms-2" type="button">Borrar</button>
+            <button class="btn btn-outline-success mx-2" id="draw" type="button">Dibujar</button>
+            <button class="btn btn-outline-success ms-2" id="erase" type="button">Borrar</button>
          </form>
       </nav>
    </header>
@@ -29,6 +29,10 @@
          <div class="row offset-md-2">
             <div class="col-12 ">
                <canvas id="canvas" class="container_canvas" width="700px" height="550px"></canvas>
+            </div>
+            <div class="col-12">
+               <canvas id="canvas_picture" class="container_canvas" width="700px" height="550px"></canvas>
+               <button id="btn_negativo">Negativo</button>
             </div>
             <div class="col-6">
                <div class="mb-1">
