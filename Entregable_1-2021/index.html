@@ -8,7 +8,7 @@
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
    <link rel="stylesheet" href="css/estilo.css">
-   <title>Document</title>
+   <title>Paint Lite</title>
 </head>
 
 <body>
@@ -32,9 +32,16 @@
             </div>
             <div class="col-12">
                <canvas id="canvas_picture" class="container_canvas" width="700px" height="550px"></canvas>
-               <button id="btn_negativo">Negativo</button>
             </div>
+            <div class="col-8">
+               <button class="btn btn-outline-success mx-2" id="btn_bw" type="button">B&W</button>
+               <button class="btn btn-outline-success mx-2" id="btn_invert" type="button">Invert</button>
+               <button class="btn btn-outline-success mx-2" id="btn_sepia" type="button">Sepia</button>
+               <button class="btn btn-outline-success mx-2" id="btn_contraste" type="button">Contraste</button>
+            </div>
+            <br>
             <div class="col-6">
+               <br>
                <div class="mb-1">
                   <input class="form-control" type="file" id="upload">
                </div>

@@ -1,38 +1,64 @@
 'use strict'
 window.addEventListener("load", () => {
 
-   let btnNeg = document.getElementById('btn_negativo');
-   btnNeg.addEventListener('click', function () {
-      negativo();
-   });
-
    let btnDraw = document.getElementById('draw');
-   btnDraw.addEventListener('click', () => {
+   btnDraw.addEventListener('click', (e) => {
+
       canvas.addEventListener('mousedown', stopErase);
       canvas.addEventListener('mousedown', startPainting);
       canvas.addEventListener('mouseup', stopPainting);
       canvas.addEventListener('mousemove', sketch);
+
+
    });
 
    let btnErase = document.getElementById('erase');
-   btnErase.addEventListener('click', () => {
+   btnErase.addEventListener('click', (e) => {
       canvas.addEventListener('mousedown', stopPainting);
       canvas.addEventListener('mousedown', startErase);
       canvas.addEventListener('mouseup', stopErase);
       canvas.addEventListener('mousemove', erase);
+
    });
+
+   let btnNeg = document.getElementById('btn_bw');
+   btnNeg.addEventListener('click', function () {
+      blackAndWhite();
+   });
+
+   let btnInvert = document.getElementById('btn_invert');
+   btnInvert.addEventListener('click', function () {
+      invert();
+   });
+
+   let btnSepia = document.getElementById('btn_sepia');
+   btnSepia.addEventListener('click', function () {
+      sepia();
+   });
+
+   let btnContras = document.getElementById('btn_contraste');
+   btnContras.addEventListener('click',function(){
+      contrast();
+   })
+   
+   canvas_picture.addEventListener('mousedown', function(){
+      save();
+   }); 
+
 });
 
+//canvas de dibujo
 var canvas = document.getElementById("canvas"); // Creates a canvas object
 var ctx = canvas.getContext("2d"); // Creates a contect object
 let rect = canvas.getBoundingClientRect();
 
+//Segundo canvas donde se inserta la imagen para aplicar fitros
 var canvas_picture = document.getElementById("canvas_picture"); // Creates a canvas object
 var ctx_picture = canvas_picture.getContext("2d"); // Creates a contect object
 
 
-var myImage = new Image();//// Creates image object
 //CARGA DE IMAGEN
+var myImage = new Image();//// Creates image object
 let imgInput = document.getElementById('upload');
 imgInput.addEventListener('change', function (e) {
    if (e.target.files) {
@@ -51,8 +77,9 @@ imgInput.addEventListener('change', function (e) {
 });
 
 //FILTROS
+// fuente https://www.etnassoft.com/2016/11/03/manipulacion-de-imagenes-con-javascript-parte-1/
 //Negativo
-function negativo() {
+function blackAndWhite() {
 
    var imageData = ctx_picture.getImageData(0, 0, canvas_picture.width, canvas_picture.height);
    var pixels = imageData.data;
@@ -71,14 +98,94 @@ function negativo() {
    ctx_picture.putImageData(imageData, 0, 0);
 }
 
+function invert() {
+   var imageData = ctx_picture.getImageData(0, 0, canvas_picture.width, canvas_picture.height);
+   var pixels = imageData.data;
+   var numPixels = imageData.width * imageData.height;
+
+   for (var i = 0; i < numPixels; i++) {
+      var r = pixels[i * 4];
+      var g = pixels[i * 4 + 1];
+      var b = pixels[i * 4 + 2];
+
+      pixels[i * 4] = 255 - r;
+      pixels[i * 4 + 1] = 255 - g;
+      pixels[i * 4 + 2] = 255 - b;
+   }
+
+   ctx_picture.putImageData(imageData, 0, 0);
+}
+
+function sepia() {
+
+   var imageData = ctx_picture.getImageData(0, 0, canvas_picture.width, canvas_picture.height);
+   var pixels = imageData.data;
+   var numPixels = imageData.width * imageData.height;
+
+   for (var i = 0; i < numPixels; i++) {
+      var r = pixels[i * 4];
+      var g = pixels[i * 4 + 1];
+      var b = pixels[i * 4 + 2];
+
+      pixels[i * 4] = 255 - r;
+      pixels[i * 4 + 1] = 255 - g;
+      pixels[i * 4 + 2] = 255 - b;
+
+      pixels[i * 4] = (r * .393) + (g * .769) + (b * .189);
+      pixels[i * 4 + 1] = (r * .349) + (g * .686) + (b * .168);
+      pixels[i * 4 + 2] = (r * .272) + (g * .534) + (b * .131);
+   }
+
+   ctx_picture.putImageData(imageData, 0, 0);
+}
+
+function contrast(contrast_default){
+
+   var imageData = ctx_picture.getImageData(0, 0, canvas_picture.width, canvas_picture.height);
+   var pixels = imageData.data;
+   var numPixels = imageData.width * imageData.height;
+   var   factor;
+   contrast_default = 100;
+
+   contrast_default || ( contrast_default = 100 ); // Default value
+ 
+    factor = ( 259 * ( contrast_default + 255 ) ) / ( 255 * ( 259 - contrast_default ) );
+ 
+    for ( var i = 0; i < numPixels; i++ ) {
+        var r = pixels[ i * 4 ];
+        var g = pixels[ i * 4 + 1 ];
+        var b = pixels[ i * 4 + 2 ];
+ 
+        pixels[ i * 4 ] = factor * ( r - 128 ) + 128;
+        pixels[ i * 4 + 1 ] = factor * ( g - 128 ) + 128;
+        pixels[ i * 4 + 2 ] = factor * ( b - 128 ) + 128;
+    }
+ 
+    ctx_picture.putImageData( imageData, 0, 0 );
+}
+
+
+function save () {
+   var link = window.document.createElement( 'a' ),
+       url = canvas_picture.toDataURL(),
+       filename = 'screenshot.jpg';
+
+   link.setAttribute( 'href', url );
+   link.setAttribute( 'download', filename );
+   link.style.visibility = 'hidden';
+   window.document.body.appendChild( link );
+   link.click();
+   window.document.body.removeChild( link );
+};
+
 
 //DIBUJAR
 // fuente https://www.geeksforgeeks.org/how-to-draw-with-mouse-in-html-5-canvas/
 // Posicion inicial del cursor
 let x, y = 0;
-//boolean para activar o desactivar el trazo
+//boolean para activar o desactivar el trazo y la goma
 let paint = false;
-let erased = false;
+let erasing = false;
 
 // Actualiza las coordenadas del cursor cuando 
 // un evento e se dispara a las coordenadas de dicho evento.
@@ -87,14 +194,14 @@ function getPosition(event) {
    y = event.clientY - rect.top;
 }
 
-// Las siguientes funciones activan el indicador para iniciar y detener el dibujo y el borrado
+// Las siguientes funciones activan el indicador para iniciar y detener el dibujado y el borrado
 function startPainting(event) {
    paint = true;
    getPosition(event);
 }
 
 function startErase(event) {
-   erased = true;
+   erasing = true;
    getPosition(event);
 }
 
@@ -103,14 +210,13 @@ function stopPainting() {
 }
 
 function stopErase() {
-   erased = false;
+   erasing = false;
 }
 
 
-
+//DIBUJAR
 function sketch(event) {
    if (!paint) return;
-
    ctx.beginPath();
 
    ctx.lineWidth = 5;
@@ -130,30 +236,27 @@ function sketch(event) {
 
    // Dibuja la linea.
    ctx.stroke();
+
 }
 
+
 //BORRADO
-function erase(pos) {
-   if (!erased) return;
+function erase(event) {
+   if (!erasing) return;
 
    ctx.beginPath();
 
    ctx.lineWidth = 30;
 
-   // Tipo y color del trazo
+   // Color goma en white
+
    ctx.lineCap = 'round';
    ctx.strokeStyle = 'white';
-
-   // El cursor para empezar a borrar se mueve a esta coordenada
    ctx.moveTo(x, y);
-
-   // La posición del cursor se actualiza a medida que movemos el ratón.
    getPosition(event);
-
-   // Se traza una línea desde la coordenada inicial hasta esta coordenada
    ctx.lineTo(x, y);
-
-   // Borra la linea.
    ctx.stroke();
+
+
 
 }
