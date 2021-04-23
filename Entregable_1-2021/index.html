@@ -15,26 +15,34 @@
 
 
    <header class="">
-      <nav class="navbar navbar-light bg-dark ml-auto">
-         <form class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success mx-2" id="draw" type="button">Dibujar</button>
-            <button class="btn btn-outline-success ms-2" id="erase" type="button">Borrar</button>
+      <nav class="navbar navbar-light .bg-gradient-primary text-white ">
+         <form class="container-fluid ">
+            <div>
+               <img class="mx-auto" src="images/Pencil512_44200.png" id="draw" alt="">
+               
+               <img class="mx-auto" src="images/rubber_96712.png" alt="" id="erase">
+            </div>
+            <div>
+               <img class="justify-content-end" src="images/32officeicons-3_89720.png" id="new" alt="">
+            </div>
          </form>
       </nav>
    </header>
 
    <br>
    <section>
-      <div class="container ">
-         <div class="row offset-md-2">
+      <div class="container-fluid ">
+         <div class="row offset-md-2 d-flex justify-content-start">
             <div class="col-12 ">
                <canvas id="canvas" class="container_canvas" width="700px" height="550px"></canvas>
             </div>
-            <div class="col-12">
+            <div class="col-12 ">
+               <h4 class="text-success">Subí tu imagen, aplicale filtros y descargala haciendo "click" sobre ella</h4>               
                <canvas id="canvas_picture" class="container_canvas" width="700px" height="550px"></canvas>
             </div>
             <div class="col-8">
                <button class="btn btn-outline-success mx-2" id="btn_bw" type="button">B&W</button>
+               <img src="" alt="">
                <button class="btn btn-outline-success mx-2" id="btn_invert" type="button">Invert</button>
                <button class="btn btn-outline-success mx-2" id="btn_sepia" type="button">Sepia</button>
                <button class="btn btn-outline-success mx-2" id="btn_contraste" type="button">Contraste</button>

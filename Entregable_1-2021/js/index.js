@@ -2,29 +2,17 @@
 window.addEventListener("load", () => {
 
    let btnDraw = document.getElementById('draw');
-   btnDraw.addEventListener('click', (e) => {
-
-      canvas.addEventListener('mousedown', stopErase);
-      canvas.addEventListener('mousedown', startPainting);
-      canvas.addEventListener('mouseup', stopPainting);
-      canvas.addEventListener('mousemove', sketch);
-
-
-   });
+   btnDraw.addEventListener('click', draw);
+   
+   
 
    let btnErase = document.getElementById('erase');
-   btnErase.addEventListener('click', (e) => {
-      canvas.addEventListener('mousedown', stopPainting);
-      canvas.addEventListener('mousedown', startErase);
-      canvas.addEventListener('mouseup', stopErase);
-      canvas.addEventListener('mousemove', erase);
-
-   });
+   btnErase.addEventListener('click', delet);
+   // btnErase.removeEventListener('click', draw)
+   
 
    let btnNeg = document.getElementById('btn_bw');
-   btnNeg.addEventListener('click', function () {
-      blackAndWhite();
-   });
+   btnNeg.addEventListener('click', blackAndWhite);
 
    let btnInvert = document.getElementById('btn_invert');
    btnInvert.addEventListener('click', function () {
@@ -37,14 +25,16 @@ window.addEventListener("load", () => {
    });
 
    let btnContras = document.getElementById('btn_contraste');
-   btnContras.addEventListener('click',function(){
+   btnContras.addEventListener('click', function () {
       contrast();
    })
-   
-   canvas_picture.addEventListener('mousedown', function(){
-      save();
-   }); 
 
+   canvas_picture.addEventListener('mousedown', function () {
+      save();
+   });
+
+   let btnNew = document.getElementById('new');
+   btnNew.addEventListener('click', clean);
 });
 
 //canvas de dibujo
@@ -55,7 +45,6 @@ let rect = canvas.getBoundingClientRect();
 //Segundo canvas donde se inserta la imagen para aplicar fitros
 var canvas_picture = document.getElementById("canvas_picture"); // Creates a canvas object
 var ctx_picture = canvas_picture.getContext("2d"); // Creates a contect object
-
 
 //CARGA DE IMAGEN
 var myImage = new Image();//// Creates image object
@@ -99,6 +88,7 @@ function blackAndWhite() {
 }
 
 function invert() {
+   
    var imageData = ctx_picture.getImageData(0, 0, canvas_picture.width, canvas_picture.height);
    var pixels = imageData.data;
    var numPixels = imageData.width * imageData.height;
@@ -139,44 +129,45 @@ function sepia() {
    ctx_picture.putImageData(imageData, 0, 0);
 }
 
-function contrast(contrast_default){
+function contrast(contrast_default) {
 
    var imageData = ctx_picture.getImageData(0, 0, canvas_picture.width, canvas_picture.height);
    var pixels = imageData.data;
    var numPixels = imageData.width * imageData.height;
-   var   factor;
+   var factor;
    contrast_default = 100;
 
-   contrast_default || ( contrast_default = 100 ); // Default value
- 
-    factor = ( 259 * ( contrast_default + 255 ) ) / ( 255 * ( 259 - contrast_default ) );
- 
-    for ( var i = 0; i < numPixels; i++ ) {
-        var r = pixels[ i * 4 ];
-        var g = pixels[ i * 4 + 1 ];
-        var b = pixels[ i * 4 + 2 ];
- 
-        pixels[ i * 4 ] = factor * ( r - 128 ) + 128;
-        pixels[ i * 4 + 1 ] = factor * ( g - 128 ) + 128;
-        pixels[ i * 4 + 2 ] = factor * ( b - 128 ) + 128;
-    }
- 
-    ctx_picture.putImageData( imageData, 0, 0 );
+   contrast_default || (contrast_default = 100); // Default value
+
+   factor = (259 * (contrast_default + 255)) / (255 * (259 - contrast_default));
+
+   for (var i = 0; i < numPixels; i++) {
+      var r = pixels[i * 4];
+      var g = pixels[i * 4 + 1];
+      var b = pixels[i * 4 + 2];
+
+      pixels[i * 4] = factor * (r - 128) + 128;
+      pixels[i * 4 + 1] = factor * (g - 128) + 128;
+      pixels[i * 4 + 2] = factor * (b - 128) + 128;
+   }
+
+   ctx_picture.putImageData(imageData, 0, 0);
 }
 
 
-function save () {
-   var link = window.document.createElement( 'a' ),
-       url = canvas_picture.toDataURL(),
-       filename = 'screenshot.jpg';
+// Al hacer click sobre la imagen, genera un link para descargarla.
+function save() {
+   var link = window.document.createElement('a'),
+      url = canvas_picture.toDataURL(),
+      filename = 'screenshot.jpg';
 
-   link.setAttribute( 'href', url );
-   link.setAttribute( 'download', filename );
+   link.setAttribute('href', url);
+   link.setAttribute('download', filename);
    link.style.visibility = 'hidden';
-   window.document.body.appendChild( link );
+   window.document.body.appendChild(link);
    link.click();
-   window.document.body.removeChild( link );
-};
+   window.document.body.removeChild(link);
+}
 
 
 //DIBUJAR
@@ -197,11 +188,13 @@ function getPosition(event) {
 // Las siguientes funciones activan el indicador para iniciar y detener el dibujado y el borrado
 function startPainting(event) {
    paint = true;
+   erasing = false;
    getPosition(event);
 }
 
 function startErase(event) {
    erasing = true;
+   paint = false;
    getPosition(event);
 }
 
@@ -215,7 +208,7 @@ function stopErase() {
 
 
 //DIBUJAR
-function sketch(event) {
+function sketch() {
    if (!paint) return;
    ctx.beginPath();
 
@@ -239,9 +232,16 @@ function sketch(event) {
 
 }
 
+function draw(event) {
+   erasing = false;
+   canvas.addEventListener('mousedown', startPainting);
+   canvas.addEventListener('mousemove', sketch);
+   canvas.addEventListener('mouseup', stopPainting);
+}
+
 
 //BORRADO
-function erase(event) {
+function erase() {
    if (!erasing) return;
 
    ctx.beginPath();
@@ -257,6 +257,26 @@ function erase(event) {
    ctx.lineTo(x, y);
    ctx.stroke();
 
+}
+
+function delet(event) {
+   paint = false;
+   canvas.addEventListener('mousedown', startErase);
+   canvas.addEventListener('mousemove', erase);
+   canvas.addEventListener('mouseup', stopErase);
+
+}
+function toggle(params) {
+   if (paint) {
+      draw();
+      
+   }else{
+      delet();
+   }
+   
+}
 
 
+function clean(){
+   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
