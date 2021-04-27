@@ -32,6 +32,11 @@ window.addEventListener("load", () => {
         brightness();
     });
 
+    let btnBlur = document.getElementById('btn_blur');
+    btnBlur.addEventListener('click', function() {
+        blur();
+    })
+
     //Boton reset
     canvas_picture.addEventListener('mousedown', function() {
         save();
@@ -184,6 +189,7 @@ function brightness() {
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
     let intensidad = 255 * (5 * 0.1); // El numero que se multiplica por 0.1 puede venir como parametro.
 
+
     for (let x = 0; x < canvas_picture.width; x++) {
         for (let y = 0; y < canvas_picture.height; y++) {
             let pixelRGBA = getPixel(editedImage, x, y);
@@ -227,6 +233,31 @@ function verificarMaxyMin(promPixel) {
     return promPixel;
 }
 
+//Blur
+function blur() {
+    editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    var px = editedImage.data;
+    var tmpPx = new Uint8ClampedArray(px.length); //contiene la representación de píxeles subyacente de la imagen. 
+    //Si no se proporciona dicha matriz, se creará una imagen con un rectángulo negro transparente de la anchura 
+    // y la altura especificadas.
+    tmpPx.set(px);
+
+    for (var i = 0, len = px.length; i < len; i++) {
+        if (i % 4 === 3) { continue; }
+
+        px[i] = (tmpPx[i] +
+            (tmpPx[i - 4] || tmpPx[i]) +
+            (tmpPx[i + 4] || tmpPx[i]) +
+            (tmpPx[i - 4 * editedImage.width] || tmpPx[i]) +
+            (tmpPx[i + 4 * editedImage.width] || tmpPx[i]) +
+            (tmpPx[i - 4 * editedImage.width - 4] || tmpPx[i]) +
+            (tmpPx[i + 4 * editedImage.width + 4] || tmpPx[i]) +
+            (tmpPx[i + 4 * editedImage.width - 4] || tmpPx[i]) +
+            (tmpPx[i - 4 * editedImage.width + 4] || tmpPx[i])
+        ) / 9;
+    };
+    ctx_picture.putImageData(editedImage, 0, 0);
+}
 
 
 function resetPicture() {
@@ -234,7 +265,7 @@ function resetPicture() {
     ctx_picture.putImageData(editedImage, 0, 0);
 }
 
-// Al hacer click sobre la imagen, genera un link para descargarla.
+// Al hacer click sobre la imagen genera un link para descargarla.
 function save() {
     var link = window.document.createElement('a'),
         url = canvas_picture.toDataURL(),
