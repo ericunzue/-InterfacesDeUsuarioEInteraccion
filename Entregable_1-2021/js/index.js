@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
     btnDraw.addEventListener('click', draw);
 
     let btnErase = document.getElementById('erase');
-    btnErase.addEventListener('click', delet);
+    btnErase.addEventListener('click', erase);
 
 
     //Botones de filtros
@@ -13,35 +13,22 @@ window.addEventListener("load", () => {
     btnBW.addEventListener('click', blackAndWhite);
 
     let btnInvert = document.getElementById('btn_invert');
-    btnInvert.addEventListener('click', function() {
-        negative();
-    });
+    btnInvert.addEventListener('click', negative);
 
     let btnSepia = document.getElementById('btn_sepia');
-    btnSepia.addEventListener('click', function() {
-        sepia();
-    });
+    btnSepia.addEventListener('click', sepia);
 
     let btnContras = document.getElementById('btn_contrast');
-    btnContras.addEventListener('click', function() {
-        contrast();
-    })
+    btnContras.addEventListener('click', contrast);
 
     let btnBrightness = document.getElementById('btn_brightness');
-    btnBrightness.addEventListener('click', function() {
-        brightness();
-    });
+    btnBrightness.addEventListener('click', brightness);
 
     let btnBlur = document.getElementById('btn_blur');
-    btnBlur.addEventListener('click', function() {
-        blur();
-    })
+    btnBlur.addEventListener('click', blur);
 
-    //Boton reset
-    canvas_picture.addEventListener('mousedown', function() {
-        save();
-    });
-
+    let btnDownload = document.getElementById('btn_download');
+    btnDownload.addEventListener('click', save);
 
 
     let btnNew = document.getElementById('new');
@@ -50,9 +37,7 @@ window.addEventListener("load", () => {
 
 
     let btnReset = document.getElementById('btn_reset');
-    btnReset.addEventListener('click', function() {
-        resetPicture();
-    })
+    btnReset.addEventListener('click', resetPicture);
 
 });
 
@@ -159,15 +144,12 @@ function sepia() {
 
 
 function contrast(contrast_default) {
-
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var pixels = editedImage.data;
     var numPixels = editedImage.width * editedImage.height;
     var factor;
     contrast_default = 100;
-
     contrast_default || (contrast_default = 100); // Default value
-
     factor = (259 * (contrast_default + 255)) / (255 * (259 - contrast_default));
 
     for (var i = 0; i < numPixels; i++) {
@@ -179,17 +161,25 @@ function contrast(contrast_default) {
         pixels[i * 4 + 1] = factor * (g - 128) + 128;
         pixels[i * 4 + 2] = factor * (b - 128) + 128;
     }
-
     ctx_picture.putImageData(editedImage, 0, 0);
 }
 
 
 function brightness() {
-
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    var pixels = editedImage.data;
+    var numPixels = editedImage.width * editedImage.height;
+
+    for (var i = 0; i < numPixels; i++) {
+        var r = pixels[i * 4];
+        var g = pixels[i * 4 + 1];
+        var b = pixels[i * 4 + 2];
+
+
+
+    }
+
     let intensidad = 255 * (5 * 0.1); // El numero que se multiplica por 0.1 puede venir como parametro.
-
-
     for (let x = 0; x < canvas_picture.width; x++) {
         for (let y = 0; y < canvas_picture.height; y++) {
             let pixelRGBA = getPixel(editedImage, x, y);
@@ -200,10 +190,9 @@ function brightness() {
             setPixel(editedImage, x, y, promPixelR, promPixelG, promPixelB, promPixelA);
         }
     }
-
     ctx_picture.putImageData(editedImage, 0, 0, );
-
 }
+
 
 function setPixel(imageData, x, y, r, g, b, a) {
     let index = (x + y * imageData.height) * 4;
@@ -212,6 +201,7 @@ function setPixel(imageData, x, y, r, g, b, a) {
     imageData.data[index + 2] = b;
     imageData.data[index + 3] = a;
 }
+
 
 function getPixel(imageData, x, y) {
     let index = (x + y * imageData.height) * 4;
@@ -233,7 +223,7 @@ function verificarMaxyMin(promPixel) {
     return promPixel;
 }
 
-//Blur
+//Blur https://stackoverflow.com/questions/39939001/how-is-possible-this-gaussian-blur-javascript-algorithm-work
 function blur() {
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var px = editedImage.data;
@@ -257,6 +247,7 @@ function blur() {
         ) / 9;
     };
     ctx_picture.putImageData(editedImage, 0, 0);
+
 }
 
 
@@ -265,25 +256,22 @@ function resetPicture() {
     ctx_picture.putImageData(editedImage, 0, 0);
 }
 
-// Al hacer click sobre la imagen genera un link para descargarla.
+// DESCARGAR IMAGEN
 function save() {
-    var link = window.document.createElement('a'),
-        url = canvas_picture.toDataURL(),
-        filename = 'screenshot.jpg';
-
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-    window.document.body.appendChild(link);
+    var link = document.createElement('a');
+    link.download = 'download.png';
+    link.href = canvas_picture.toDataURL()
     link.click();
-    window.document.body.removeChild(link);
+    link.delete;
 }
 
 
 //DIBUJAR
 // fuente https://www.geeksforgeeks.org/how-to-draw-with-mouse-in-html-5-canvas/
 // Posicion inicial del cursor
-let x, y = 0;
+
+let coord = { x: 0, y: 0 };
+
 //boolean para activar o desactivar el trazo y la goma
 let paint = false;
 let erasing = false;
@@ -291,21 +279,21 @@ let erasing = false;
 // Actualiza las coordenadas del cursor cuando 
 // un evento "e" se dispara a las coordenadas de dicho evento.
 function getPosition(event) {
-    x = event.clientX - rect.left;
-    y = event.clientY - rect.top;
+    coord.x = Math.round(event.clientX - rect.left);
+    coord.y = Math.round(event.clientY - rect.top)
 }
 
 // Las siguientes funciones activan el indicador para iniciar y detener el dibujado y el borrado
 function startPainting(event) {
-    getPosition(event);
     paint = true;
     erasing = false;
+    getPosition(event);
 }
 
 function startErase(event) {
-    getPosition(event);
     erasing = true;
     paint = false;
+    getPosition(event);
 }
 
 function stopPainting() {
@@ -320,8 +308,8 @@ function stopErase() {
 //DIBUJAR
 function sketch() {
     if (!paint) return;
-    ctx.beginPath();
 
+    ctx.beginPath();
     ctx.lineWidth = 5;
 
     // Tipo y color del trazo
@@ -329,13 +317,13 @@ function sketch() {
     ctx.strokeStyle = 'green';
 
     // El cursor para empezar a dibujar se mueve a esta coordenada
-    ctx.moveTo(x, y);
+    ctx.moveTo(coord.x, coord.y);
 
     // La posición del cursor se actualiza a medida que movemos el ratón.
     getPosition(event);
 
     // Se traza una línea desde la coordenada inicial hasta esta coordenada
-    ctx.lineTo(x, y);
+    ctx.lineTo(coord.x, coord.y);
 
     // Dibuja la linea.
     ctx.stroke();
@@ -344,42 +332,38 @@ function sketch() {
 
 function draw(event) {
     erasing = false;
-    canvas.removeEventListener('mousedown', startErase);
-    canvas.removeEventListener('mousemove', erase);
-    canvas.removeEventListener('mouseup', stopErase);
-    canvas.addEventListener('mousedown', startPainting);
-    canvas.addEventListener('mousemove', sketch);
-    canvas.addEventListener('mouseup', stopPainting);
+    canvas_picture.removeEventListener('mousedown', startErase);
+    canvas_picture.removeEventListener('mousemove', erase);
+    canvas_picture.removeEventListener('mouseup', stopErase);
+    canvas_picture.addEventListener('mousedown', startPainting);
+    canvas_picture.addEventListener('mousemove', sketch);
+    canvas_picture.addEventListener('mouseup', stopPainting);
 }
 
 
 //BORRADO
-function erase() {
+function scratch() {
     if (!erasing) return;
 
     ctx.beginPath();
-
     ctx.lineWidth = 30;
-
-    // Color goma en white
-
     ctx.lineCap = 'round';
     ctx.strokeStyle = 'white';
-    ctx.moveTo(x, y);
+    ctx.moveTo(coord.x, coord.y);
     getPosition(event);
-    ctx.lineTo(x, y);
+    ctx.lineTo(coord.x, coord.y);
     ctx.stroke();
 
 }
 
-function delet(event) {
+function erase(event) {
     paint = false;
-    canvas.removeEventListener('mousedown', startPainting);
-    canvas.removeEventListener('mousemove', sketch);
-    canvas.removeEventListener('mouseuo', stopPainting);
-    canvas.addEventListener('mousedown', startErase);
-    canvas.addEventListener('mousemove', erase);
-    canvas.addEventListener('mouseup', stopErase);
+    canvas_picture.removeEventListener('mousedown', startPainting);
+    canvas_picture.removeEventListener('mousemove', sketch);
+    canvas_picture.removeEventListener('mouseup', stopPainting);
+    canvas_picture.addEventListener('mousedown', startErase);
+    canvas_picture.addEventListener('mousemove', scratch);
+    canvas_picture.addEventListener('mouseup', stopErase);
 
 }
 
