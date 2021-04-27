@@ -167,18 +167,6 @@ function contrast(contrast_default) {
 
 function brightness() {
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var pixels = editedImage.data;
-    var numPixels = editedImage.width * editedImage.height;
-
-    for (var i = 0; i < numPixels; i++) {
-        var r = pixels[i * 4];
-        var g = pixels[i * 4 + 1];
-        var b = pixels[i * 4 + 2];
-
-
-
-    }
-
     let intensidad = 255 * (5 * 0.1); // El numero que se multiplica por 0.1 puede venir como parametro.
     for (let x = 0; x < canvas_picture.width; x++) {
         for (let y = 0; y < canvas_picture.height; y++) {
