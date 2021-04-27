@@ -44,13 +44,13 @@ window.addEventListener("load", () => {
 //canvas de dibujo
 var canvas = document.getElementById("canvas"); // Creates a canvas object
 var ctx = canvas.getContext("2d"); // Creates a contect object
-let rect = canvas.getBoundingClientRect();
 let canvasWidth = canvas.width;
 let canvasHeight = canvas.height;
 
 //Segundo canvas donde se inserta la imagen para aplicar fitros
 var canvas_picture = document.getElementById("canvas_picture"); // Creates a canvas object
 var ctx_picture = canvas_picture.getContext("2d"); // Creates a contect object
+let rect = canvas_picture.getBoundingClientRect();
 let canvasPictureWidth = canvas_picture.width;
 let canvasPictureHeight = canvas_picture.height;
 
@@ -118,7 +118,7 @@ function negative() {
     ctx_picture.putImageData(editedImage, 0, 0);
 }
 
-
+//Sepia
 function sepia() {
 
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -142,7 +142,7 @@ function sepia() {
     ctx_picture.putImageData(editedImage, 0, 0);
 }
 
-
+//Contraste
 function contrast(contrast_default) {
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var pixels = editedImage.data;
@@ -164,7 +164,7 @@ function contrast(contrast_default) {
     ctx_picture.putImageData(editedImage, 0, 0);
 }
 
-
+//Brillo
 function brightness() {
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
     let intensidad = 255 * (5 * 0.1); // El numero que se multiplica por 0.1 puede venir como parametro.
@@ -211,7 +211,8 @@ function verificarMaxyMin(promPixel) {
     return promPixel;
 }
 
-//Blur https://stackoverflow.com/questions/39939001/how-is-possible-this-gaussian-blur-javascript-algorithm-work
+//Blur 
+//https://stackoverflow.com/questions/39939001/how-is-possible-this-gaussian-blur-javascript-algorithm-work
 function blur() {
     editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
     var px = editedImage.data;
@@ -240,8 +241,8 @@ function blur() {
 
 
 function resetPicture() {
-    editedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    ctx_picture.putImageData(editedImage, 0, 0);
+    let image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx_picture.putImageData(image, 0, 0);
 }
 
 // DESCARGAR IMAGEN
@@ -273,15 +274,15 @@ function getPosition(event) {
 
 // Las siguientes funciones activan el indicador para iniciar y detener el dibujado y el borrado
 function startPainting(event) {
+    getPosition(event);
     paint = true;
     erasing = false;
-    getPosition(event);
 }
 
 function startErase(event) {
+    getPosition(event);
     erasing = true;
     paint = false;
-    getPosition(event);
 }
 
 function stopPainting() {
@@ -297,24 +298,24 @@ function stopErase() {
 function sketch() {
     if (!paint) return;
 
-    ctx.beginPath();
-    ctx.lineWidth = 5;
+    ctx_picture.beginPath();
+    ctx_picture.lineWidth = 5;
 
     // Tipo y color del trazo
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = 'green';
+    ctx_picture.lineCap = 'round';
+    ctx_picture.strokeStyle = 'green';
 
     // El cursor para empezar a dibujar se mueve a esta coordenada
-    ctx.moveTo(coord.x, coord.y);
+    ctx_picture.moveTo(coord.x, coord.y);
 
     // La posición del cursor se actualiza a medida que movemos el ratón.
     getPosition(event);
 
     // Se traza una línea desde la coordenada inicial hasta esta coordenada
-    ctx.lineTo(coord.x, coord.y);
+    ctx_picture.lineTo(coord.x, coord.y);
 
     // Dibuja la linea.
-    ctx.stroke();
+    ctx_picture.stroke();
 
 }
 
@@ -333,21 +334,21 @@ function draw(event) {
 function scratch() {
     if (!erasing) return;
 
-    ctx.beginPath();
-    ctx.lineWidth = 30;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = 'white';
-    ctx.moveTo(coord.x, coord.y);
+    ctx_picture.beginPath();
+    ctx_picture.lineWidth = 30;
+    ctx_picture.lineCap = 'round';
+    ctx_picture.strokeStyle = 'white';
+    ctx_picture.moveTo(coord.x, coord.y);
     getPosition(event);
-    ctx.lineTo(coord.x, coord.y);
-    ctx.stroke();
+    ctx_picture.lineTo(coord.x, coord.y);
+    ctx_picture.stroke();
 
 }
 
 function erase(event) {
     paint = false;
     canvas_picture.removeEventListener('mousedown', startPainting);
-    canvas_picture.removeEventListener('mousemove', sketch);
+    canvas_picture.removeEventListener('mousemove', draw);
     canvas_picture.removeEventListener('mouseup', stopPainting);
     canvas_picture.addEventListener('mousedown', startErase);
     canvas_picture.addEventListener('mousemove', scratch);
@@ -357,5 +358,5 @@ function erase(event) {
 
 
 function clean() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx_picture.clearRect(0, 0, canvas_picture.width, canvas_picture.height);
 }
