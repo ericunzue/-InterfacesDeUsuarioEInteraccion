@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     let canvas = document.getElementById('canvas');
-    canvas.width = 800;
+    canvas.width = 1200;
     canvas.height = 600;
     let ctx = canvas.getContext('2d');
 
@@ -13,10 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.addEventListener('mousemove', (eMouseMove) => {
                 fourInLine.handlerDrag(eMouseMove.offsetX, eMouseMove.offsetY);
             });
+
         }
     });
-    canvas.addEventListener('mouseup', (eMouseUp) => {
-        canvas.removeListener('mousemove', handleDrag);
+
+
+    canvas.addEventListener('mouseup', () => {
+        canvas.removeEventListener('mousemove', fourInLine.handlerDrag);
         fourInLine.stopDragging();
     })
 })
