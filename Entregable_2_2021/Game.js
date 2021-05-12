@@ -6,7 +6,7 @@ class Game {
         this.selectedChip = null;
         this.width = width;
         this.height = height;
-        this.dragging = false;
+
     }
 
     draw() {
@@ -48,6 +48,10 @@ class Game {
             this.draw();
 
         }
+    }
+
+    setTurn() {
+        this.board.setTurn();
     }
 
 }

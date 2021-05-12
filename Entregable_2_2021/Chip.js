@@ -5,6 +5,7 @@
             this.color = color;
             this.radius = radius;
             this.context = context
+            this.movable = true;
         }
 
 
@@ -27,10 +28,20 @@
         }
 
         move(clickedX, clickedY) {
-            this.posX = clickedX;
-            this.posY = clickedY;
+            if (this.movable) {
+                this.posX = clickedX;
+                this.posY = clickedY;
+            }
+
         }
 
+        setMovable() {
+            this.movable = false;
+        }
+
+        getColor() {
+            return this.color;
+        }
 
 
     }

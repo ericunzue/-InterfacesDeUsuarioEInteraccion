@@ -9,6 +9,7 @@ class Board {
         ]; // representa el tablero donde voy a dibujar los espacios en blanco
         this.row = 5;
         this.col = 8;
+        this.turn = true;
         this.createPlayerChips(80, 150, "#FF0000"); //Crea 20 fichas de color rojo
         this.createPlayerChips(1100, 150, "#0000FF"); //Crea 20 fichas de color azul
         this.createBoard();
@@ -33,8 +34,16 @@ class Board {
 
     getSelectedChip(clickedX, clickedY) {
         for (let index = 0; index < this.chips.length; index++) {
-            if (this.chips[index].isHitted(clickedX, clickedY)) {
-                return this.chips[index];
+            if (this.turn) {
+                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColor() == "#FF0000")) {
+                    return this.chips[index];
+                }
+
+            } else {
+                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColor() == "#0000FF")) {
+                    return this.chips[index];
+
+                }
             }
         }
         return null;
@@ -88,16 +97,10 @@ class Board {
 
         for (let index = 0; index < columnas.length; index++) {
             if (columnas[index].isHitted(clickedX, clickedY)) {
-
                 return index;
-
             }
-
         }
-
         return -1;
-
-
     }
 
 
@@ -122,7 +125,7 @@ class Board {
 
         let col = this.detectColumn(clickedX, clickedY);
 
-        if (col != 1) {
+        if (col != -1) {
 
             let emptySpace = this.lastPosition(col);
             let posX = emptySpace[0].posX;
@@ -131,11 +134,17 @@ class Board {
             let y = emptySpace[1];
 
             chip.move(posX, posY);
+            chip.setMovable();
             this.board[x][y].setChip(chip);
+            this.setTurn();
+
 
         }
+
     }
 
-
+    setTurn() {
+        this.turn = !this.turn;
+    }
 
 }
