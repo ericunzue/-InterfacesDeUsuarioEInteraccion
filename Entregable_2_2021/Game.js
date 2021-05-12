@@ -6,6 +6,7 @@ class Game {
         this.selectedChip = null;
         this.width = width;
         this.height = height;
+        this.dragging = false;
     }
 
     draw() {
@@ -39,12 +40,11 @@ class Game {
         }
     }
 
-    detectPosition(clickedX, clickedY) {
-        let col = this.board.detectColumn(clickedX, clickedY);
-        console.log(col);
-        if (col <= 0) {
-            let row = this.board.lastPosition(col);
-            this.selectedChip.move(col, row);
+    dropChip(clickedX, clickedY) {
+
+        if (this.selectedChip) {
+            this.board.dropChip(this.selectedChip, clickedX, clickedY);
+            this.selectedChip = null;
             this.draw();
 
         }

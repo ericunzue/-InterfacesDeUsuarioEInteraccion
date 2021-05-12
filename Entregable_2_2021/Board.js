@@ -17,10 +17,17 @@ class Board {
 
     draw() {
 
+        for (let row = 0; row < this.row; row++) {
+            for (let col = 0; col < this.col; col++) {
+
+                this.board[col][row].draw();
+            }
+        }
+
         this.chips.forEach(chip => {
             chip.draw();
         })
-        this.createBoard();
+
 
     }
 
@@ -32,6 +39,7 @@ class Board {
         }
         return null;
     }
+
 
     createBoard() {
 
@@ -49,16 +57,12 @@ class Board {
                 posY = col + 145;
                 let emptySpace = new EmptySpace(posX, posY, 35, colour, this.context);
                 this.board[x][y] = emptySpace;
-                this.board[x][y].draw();
-
                 y++;
             }
             x++;
         }
+        console.log(this.board);
     }
-
-
-
 
 
     createPlayerChips(x, y, colour) { //crea las fichas
@@ -82,52 +86,55 @@ class Board {
         let col8 = this.board[7][0];
         let columnas = [col1, col2, col3, col4, col5, col6, col7, col8];
 
-
-
         for (let index = 0; index < columnas.length; index++) {
             if (columnas[index].isHitted(clickedX, clickedY)) {
 
                 return index;
 
             }
+
         }
+
+        return -1;
 
 
     }
 
+
+
     lastPosition(col) { // traigo la última posicion ocupada para saber donde insertar la ficha
-        let i = 0;
+
         let columnas = this.board[col];
 
-        for (let index = columnas.length - 1; index > 0; index--) {
+        for (let index = columnas.length - 1; index >= 0; index--) {
 
-            if (columnas[index].chip == null) {
+            if (columnas[index].getChip() == null) {
 
-                return [columnas[index], col, index];
+                return [columnas[index], index, col];
             }
         }
         return null;
     }
 
 
+    dropChip(chip, clickedX, clickedY) {
 
 
-    // dropChip(chip, col, clickedX, clickedY) {
+        let col = this.detectColumn(clickedX, clickedY);
 
-    //     let i = 0;
-    //     let maxR = this.row - 1;
-    //     let completeCol = true;
+        if (col != 1) {
 
-    //     while ((i <= maxR) && (this.board[col][i].emptySpace.chip == null)) {
-    //         i++;
-    //         columnaCompleta = true;
-    //     }
-    //     this.board[col][i - 1] = chip;
-    //     chip.move(clickedX, clickedY);
-    //     columnaCompleta = false;
+            let emptySpace = this.lastPosition(col);
+            let posX = emptySpace[0].posX;
+            let posY = emptySpace[0].posY;
+            let x = emptySpace[2];
+            let y = emptySpace[1];
 
+            chip.move(posX, posY);
+            this.board[x][y].setChip(chip);
 
-    // }
+        }
+    }
 
 
 

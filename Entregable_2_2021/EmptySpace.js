@@ -29,6 +29,13 @@ class EmptySpace {
         return Math.sqrt((clickedX - this.posX) ** 2 + (clickedY - this.posY) ** 2) < this.radius
     }
 
+    setChip(chip) {
+        this.chip = chip;
+    }
+
+    getChip() {
+        return this.chip;
+    }
 
 
 

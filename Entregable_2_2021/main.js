@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     canvas.addEventListener('mouseup', (e) => {
         canvas.removeEventListener('mousemove', fourInLine.handlerDrag);
-        fourInLine.detectPosition(e.offsetX, e.offsetY);
+        fourInLine.dropChip(e.offsetX, e.offsetY);
         fourInLine.stopDragging();
     })
 })
