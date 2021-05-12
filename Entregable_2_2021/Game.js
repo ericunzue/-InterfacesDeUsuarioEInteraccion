@@ -39,4 +39,15 @@ class Game {
         }
     }
 
+    detectPosition(clickedX, clickedY) {
+        let col = this.board.detectColumn(clickedX, clickedY);
+        console.log(col);
+        if (col <= 0) {
+            let row = this.board.lastPosition(col);
+            this.selectedChip.move(col, row);
+            this.draw();
+
+        }
+    }
+
 }
