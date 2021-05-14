@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.height = 600;
     let ctx = canvas.getContext('2d');
 
+
+
     let fourInLine = new Game(ctx, canvas.width, canvas.height);
     fourInLine.draw();
 
@@ -22,9 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.removeEventListener('mousemove', fourInLine.handlerDrag);
 
         fourInLine.dropChip(e.offsetX, e.offsetY);
-        // if (fourInLine.dropChip(e.offsetX, e.offsetY)) {
-        // fourInLine.setTurn();
-        // }
         fourInLine.stopDragging();
     })
 })

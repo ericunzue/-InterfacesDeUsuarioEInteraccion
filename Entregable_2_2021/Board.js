@@ -10,14 +10,14 @@ class Board {
         this.row = 5;
         this.col = 8;
         this.turn = true;
-        this.createPlayerChips(80, 150, "#FF0000"); //Crea 20 fichas de color rojo
-        this.createPlayerChips(1100, 150, "#0000FF"); //Crea 20 fichas de color azul
+
         this.createBoard();
 
     }
 
     draw() {
 
+        this.boardBackground();
         for (let row = 0; row < this.row; row++) {
             for (let col = 0; col < this.col; col++) {
 
@@ -35,12 +35,12 @@ class Board {
     getSelectedChip(clickedX, clickedY) {
         for (let index = 0; index < this.chips.length; index++) {
             if (this.turn) {
-                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColor() == "#FF0000")) {
+                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#FF0000")) {
                     return this.chips[index];
                 }
 
             } else {
-                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColor() == "#0000FF")) {
+                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#0000FF")) {
                     return this.chips[index];
 
                 }
@@ -50,13 +50,14 @@ class Board {
     }
 
 
-    createBoard() {
+    createBoard() { //crea la matriz con los espacios en blanco
 
         let x = 0;
         let y = 0;
         let posX = 0;
         let posY = 0;
-        let colour = "#000000";
+        let colo = "#000000";
+        this.boardBackground();
         for (let row = 0; row < 640; row += 90) {
 
             this.board[x] = [];
@@ -64,13 +65,16 @@ class Board {
             for (let col = 0; col < 400; col += 90) {
                 posX = row + 285;
                 posY = col + 145;
-                let emptySpace = new EmptySpace(posX, posY, 35, colour, this.context);
+                let emptySpace = new EmptySpace(posX, posY, 35, colo, this.context);
                 this.board[x][y] = emptySpace;
                 y++;
             }
             x++;
         }
-        console.log(this.board);
+        this.createPlayerChips(80, 150, "#FF0000"); //Crea 20 fichas de color rojo
+        this.createPlayerChips(1100, 150, "#0000FF"); //Crea 20 fichas de color azul
+
+
     }
 
 
@@ -107,13 +111,13 @@ class Board {
 
     lastPosition(col) { // traigo la última posicion ocupada para saber donde insertar la ficha
 
-        let columnas = this.board[col];
+        let colum = this.board[col];
 
-        for (let index = columnas.length - 1; index >= 0; index--) {
+        for (let index = colum.length - 1; index >= 0; index--) {
 
-            if (columnas[index].getChip() == null) {
+            if (colum[index].getChip() == null) {
 
-                return [columnas[index], index, col];
+                return [colum[index], col, index]; //Me devuleve un arreglo de Objeto/atributos.Col =x; index = Y;
             }
         }
         return null;
@@ -125,17 +129,20 @@ class Board {
 
         let col = this.detectColumn(clickedX, clickedY);
 
-        if (col != -1) {
+        if ((col != -1) && (col != null) && (!this.thereIsAWinner(chip))) {
 
             let emptySpace = this.lastPosition(col);
             let posX = emptySpace[0].posX;
             let posY = emptySpace[0].posY;
-            let x = emptySpace[2];
-            let y = emptySpace[1];
+            let x = emptySpace[1];
+            let y = emptySpace[2];
+
+
 
             chip.move(posX, posY);
             chip.setMovable();
             this.board[x][y].setChip(chip);
+            this.thereIsAWinner(chip);
             this.setTurn();
 
 
@@ -143,8 +150,171 @@ class Board {
 
     }
 
-    setTurn() {
+    setTurn() { // cambia el valor del turno
         this.turn = !this.turn;
     }
+
+
+    boardBackground() { // fondo del board
+
+        this.context.beginPath();
+        this.context.strokeRect(219, 97, 750, 450);
+        this.context.fillStyle = "#18a4e1";
+        this.context.fillRect(219, 97, 750, 450);
+        this.context.closePath();
+    }
+
+
+
+    /*
+    Estos métodos para comprobar si hay ganador recorren siempre toda la matriz en busca de  coincidencias. 
+	Los adapté del mismo juego pero realizado en JAVA como TP especial para programación1 libre
+    Para mejorar:  que la comprobación se haga desde la última ficha insertada. 
+	*/
+
+    //BUSCA MATCHING HORIZONTAL
+    horizontalMatching(chip) {
+
+        let count = 0;
+        let match = false;
+
+        for (let row = 0; row < this.row; row++) {
+            count = 0;
+            for (let col = 0; col < this.col; col++) {
+
+                if (this.board[col][row].getChip() != null && this.board[col][row].getColour() == chip.getColour()) {
+                    count++;
+                    if (count == 4) {
+                        match = true;
+                        console.log("rightHorizontal true");
+
+                    }
+                } else {
+                    count = 0;
+                }
+            }
+        }
+        return match;
+    }
+
+    //BUSCA MATCHING VERTICAL
+
+    columnMatching(chip) {
+
+        let count = 0;
+        let match = false;
+
+        for (let col = 0; col < this.col; col++) {
+            count = 0;
+
+            for (let row = 0; row < this.row; row++) {
+
+                if (this.board[col][row].getChip() != null && this.board[col][row].getColour() == chip.getColour()) {
+                    count++;
+
+                    if (count == 4) {
+                        match = true;
+                        console.log("columnMatching true");
+
+                    }
+                } else {
+                    count = 0;
+                }
+            }
+        }
+        return match;
+    }
+
+
+    //BUSCA MATCHING EN DIAGONALES
+
+    diagonalMatching(chip) {
+
+        /*
+         *Para buscar en la diagonal primaria comienzo en la primer columna y ultima fila. Cada vez que me desplazo con los For uso los while para trazar
+         *las diagonales umando 1 a row y col.
+         *Para la diagonal secundaria comienzo desde la ultima fila y columna. Me desplazo hacia arriba con el for y trazo la diagonal. En este caso restando
+         *1 a row y col.		
+         */
+        let count;
+        let maxF = this.row - 1;
+        let maxC = this.col - 1;
+        let match = false;
+
+        for (let col = 0; col <= maxC; col++) { // busca en el plano de la diagonal primaria
+            for (let row = maxC; row >= 0; row--) {
+                count = 0;
+
+                if (col == 0 || row == 0) {
+                    let auxC = col;
+                    let auxF = row;
+                    while ((auxC <= (maxC)) && (auxF <= (maxF))) {
+
+                        if (this.board[auxC][auxF].getChip() != null && this.board[auxC][auxF].getColour() == chip.getColour()) {
+                            count++;
+
+                            if (count == 4) {
+                                match = true;
+                                console.log("diagonal1 true");
+                            }
+                        } else {
+                            count = 0;
+                        }
+                        auxF++;
+                        auxC++;
+                    }
+                }
+            }
+        }
+
+        if (!match) { // busca en el plano de la diagonal secundaria
+
+            for (let col = maxC; col >= 0; col--) {
+
+                for (let row = maxF; row >= 0; row--) {
+                    count = 0;
+
+                    if (col == 0 || row == 0) {
+                        let auxC = col;
+                        let auxF = row;
+
+                        while ((auxC >= 0) && (auxF <= (maxF))) {
+
+                            if (this.board[auxC][auxF].getChip() != null && this.board[auxC][auxF].getColour() == chip.getColour()) {
+                                count++;
+
+                                if (count == 4) {
+                                    match = true;
+                                    console.log("diagonal2 true")
+                                }
+                            } else {
+                                count = 0;
+                            }
+                            auxF++;
+                            auxC--;
+                        }
+                    }
+                }
+            }
+        }
+        console.log(match);
+        return match;
+
+    }
+
+
+
+    thereIsAWinner(chip) {
+
+        if (this.horizontalMatching(chip) || this.columnMatching(chip) || this.diagonalMatching(chip)) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+
+
 
 }

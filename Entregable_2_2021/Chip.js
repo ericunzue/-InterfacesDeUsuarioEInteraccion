@@ -1,8 +1,8 @@
     class Chip {
-        constructor(posX, posY, color, radius, context) {
+        constructor(posX, posY, colour, radius, context) {
             this.posX = posX;
             this.posY = posY;
-            this.color = color;
+            this.colour = colour;
             this.radius = radius;
             this.context = context
             this.movable = true;
@@ -10,7 +10,7 @@
 
 
         draw() {
-            this.context.fillStyle = this.color;
+            this.context.fillStyle = this.colour;
             this.context.beginPath();
             this.context.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI);
             this.context.fill();
@@ -39,8 +39,8 @@
             this.movable = false;
         }
 
-        getColor() {
-            return this.color;
+        getColour() {
+            return this.colour;
         }
 
 

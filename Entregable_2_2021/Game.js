@@ -32,6 +32,7 @@ class Game {
 
     stopDragging() {
         this.mode = 'standBy';
+        //TODO
     }
 
     checkMove() {

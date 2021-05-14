@@ -4,11 +4,12 @@
 
 class EmptySpace {
 
+    //posible mejora: guardar X e Y de este espacio como atributo. Que el objeto guarde toda la información que pueda necesitar.
     constructor(posX, posY, radius, colour, context) {
         this.posX = posX;
         this.posY = posY;
         this.radius = radius;
-        this.colour = colour;
+        this.colour = 'white';
         this.chip = null;
         this.context = context;
     }
@@ -16,13 +17,16 @@ class EmptySpace {
 
     draw() {
         // los circulos que conforman el tablero de juego
+        this.context.fillStyle = this.colour;
         this.context.beginPath();
         this.context.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI);
-        this.context.lineWidth = 2;
-        this.context.strokeStyle = this.colour;
-        this.context.stroke();
+        this.context.fill();
         this.context.closePath();
 
+        this.context.beginPath();
+        this.context.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI);
+        this.context.stroke();
+        this.context.closePath();
     }
 
     isHitted(clickedX, clickedY) {
@@ -35,6 +39,10 @@ class EmptySpace {
 
     getChip() {
         return this.chip;
+    }
+
+    getColour() {
+        return this.chip.getColour();
     }
 
 
