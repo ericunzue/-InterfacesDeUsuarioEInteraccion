@@ -3,20 +3,21 @@
             this.posX = posX;
             this.posY = posY;
             this.colour = colour;
+            // this.image = image;
             this.radius = radius;
-            this.context = context
+            this.context = context;
             this.movable = true;
         }
 
 
         draw() {
-            this.context.fillStyle = this.colour;
             this.context.beginPath();
+            this.context.fillStyle = this.colour;
             this.context.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI);
             this.context.fill();
             this.context.closePath();
 
-            this.context.beginPath();
+
             this.context.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI);
             this.context.stroke();
             this.context.closePath();
@@ -42,6 +43,10 @@
         getColour() {
             return this.colour;
         }
+
+        // setImage(image) {
+        //     this.image = image;
+        // }
 
 
     }
