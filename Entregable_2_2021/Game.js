@@ -12,6 +12,7 @@ class Game {
     draw() {
         this.context.clearRect(0, 0, this.width, this.height);
         this.board.draw();
+
     }
 
     checkHit(clickedX, clickedY) {

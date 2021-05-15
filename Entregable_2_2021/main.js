@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.height = 600;
     let ctx = canvas.getContext('2d');
 
+
     //Centrar canvas a la pantalla
     let style = canvas.style;
     style.marginLeft = "auto";
@@ -37,6 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
         fourInLine.dropChip(e.offsetX, e.offsetY);
         fourInLine.stopDragging();
     })
+
+
+    let btnModal = document.getElementById('btnModal');
+    btnModal.addEventListener('click', () => {
+        fourInLine = new Game(ctx, canvas.width, canvas.height);
+        fourInLine.draw();
+
+    });
+
+
+    let btnReset = document.getElementById('btnReset');
+    btnReset.addEventListener('click', () => {
+        fourInLine = new Game(ctx, canvas.width, canvas.height);
+        fourInLine.draw();
+
+    });
 
 
 

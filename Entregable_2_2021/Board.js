@@ -12,6 +12,7 @@ class Board {
         this.moves = 40;
         this.turn = true;
         this.tie = false;
+        this.winner = false;
 
         this.createBoard();
 
@@ -21,7 +22,8 @@ class Board {
     draw() {
 
         this.boardBackground();
-        this.drawTitle(250, 50);
+        this.drawTitle(270, 50, 'Four Up - TPE_2 User Interfaces', '40px verdana', "#18a4e1");
+        this.drawTitle(500, 80, 'Insert chips on top', '20px helvetica', "#000000");
 
         for (let row = 0; row < this.row; row++) {
             for (let col = 0; col < this.col; col++) {
@@ -30,19 +32,46 @@ class Board {
         }
 
         this.chips.forEach(chip => {
-            chip.draw();
-        })
-    }
+            chip.drawImage();
 
+        })
+
+        if (this.turn) {
+            this.drawTitle(25, 100, 'Red plays', '25px verdana', "#FF0000");
+
+        } else {
+            this.drawTitle(1050, 100, 'Blue plays', '25px verdana', "#0000FF");
+
+        }
+
+        if (this.tie) {
+            this.endGame();
+            this.showModal('¡¡Ups!!', 'There is a tie')
+        } else {
+            if (this.winner) {
+
+                this.endGame();
+                if (!this.turn) {
+
+                    this.showModal('¡¡You win!!', 'RED');
+                } else {
+                    this.showModal('¡¡You win!!', 'BLUE');
+
+                }
+            }
+        }
+    }
 
     getSelectedChip(clickedX, clickedY) {
         for (let index = 0; index < this.chips.length; index++) {
             if (this.turn) {
+
                 if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#FF0000")) {
                     return this.chips[index];
                 }
             } else {
                 if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#0000FF")) {
+
                     return this.chips[index];
                 }
             }
@@ -57,7 +86,6 @@ class Board {
         let y = 0;
         let posX = 0;
         let posY = 0;
-        // let colo = "#000000";
 
         for (let row = 0; row < 640; row += 90) {
 
@@ -68,7 +96,6 @@ class Board {
                 posY = col + 145;
                 let emptySpace = new EmptySpace(posX, posY, 35, this.context);
                 this.board[x][y] = emptySpace;
-
                 y++;
             }
             x++;
@@ -79,16 +106,16 @@ class Board {
 
 
     createPlayerChips(x, y, colour) { //crea las fichas
-        // let image = new Image();
-        // image.src = "/img/blackChip.jpg";
-        // image.onload = function() {
-        for (let i = 0; i < 20; i++) {
-            let chip = new Chip(x, y, colour, 35, this.context);
-            // chip.setImage(image);
-            this.chips.push(chip);
-            y += 20;
+        let image = new Image();
+        image.src = "img/chip.png";
+        image.onload = () => {
+            for (let i = 0; i < 20; i++) {
+                let chip = new Chip(x, y, colour, image, 35, this.context);
+                this.chips.push(chip);
+                chip.drawImage();
+                y += 20;
+            }
         }
-        // }
     }
 
 
@@ -102,14 +129,13 @@ class Board {
     }
 
 
-    drawTitle(x, y) {
+    drawTitle(x, y, text, font, colour) {
 
-        let text = 'Four Up - TPE_2 User Interfaces'
         this.context.beginPath();
         this.context.lineCap = "butt";
-        this.context.lineWidth = 4;
-        this.context.fillStyle = "#18a4e1";
-        this.context.font = "45px Verdana";
+        this.context.lineWidth = 2;
+        this.context.fillStyle = colour;
+        this.context.font = font;
         this.context.strokeText(text, x, y);
         this.context.fillText(text, x, y);
         this.context.closePath();
@@ -135,16 +161,18 @@ class Board {
         return -1;
     }
 
-
+    showModal(modalTitle, modalMessage) {
+        $("#modalTitle").text(modalTitle);
+        $("#modalMessage").text(modalMessage);
+        $("#modalCenter").modal("show");
+    }
 
     lastPosition(col) { // traigo la última posicion ocupada para saber donde insertar la ficha
 
         let colum = this.board[col];
 
         for (let index = colum.length - 1; index >= 0; index--) {
-
             if (colum[index].getChip() == null) {
-
                 return [colum[index], col, index]; //Me devuleve un arreglo de Objeto/atributos.x=col, y=index;;
             }
         }
@@ -157,7 +185,7 @@ class Board {
 
         let col = this.detectColumn(clickedX, clickedY);
 
-        if ((col != -1) && (col != null) && (!this.thereIsAWinner(chip))) {
+        if ((col != -1) && (col != null) && (!this.winner)) {
 
             let emptySpace = this.lastPosition(col);
             let posX = emptySpace[0].posX;
@@ -176,16 +204,14 @@ class Board {
 
 
         }
-        if ((!this.thereIsAWinner(chip) && (this.moves == 0))) {
+        if ((!this.winner && (this.moves == 0))) { //empate
             this.tie = true;
-            alert("empate");
-
         }
-
 
     }
 
     setTurn() { // cambia el valor del turno
+
         this.turn = !this.turn;
     }
 
@@ -205,13 +231,10 @@ class Board {
         for (let row = 0; row < this.row; row++) {
             count = 0;
             for (let col = 0; col < this.col; col++) {
-
                 if (this.board[col][row].getChip() != null && this.board[col][row].getColour() == chip.getColour()) {
                     count++;
                     if (count == 4) {
                         match = true;
-                        console.log("rightHorizontal true");
-
                     }
                 } else {
                     count = 0;
@@ -230,16 +253,11 @@ class Board {
 
         for (let col = 0; col < this.col; col++) {
             count = 0;
-
             for (let row = 0; row < this.row; row++) {
-
                 if (this.board[col][row].getChip() != null && this.board[col][row].getColour() == chip.getColour()) {
                     count++;
-
                     if (count == 4) {
                         match = true;
-                        console.log("columnMatching true");
-
                     }
                 } else {
                     count = 0;
@@ -279,7 +297,7 @@ class Board {
 
                             if (count == 4) {
                                 match = true;
-                                console.log("diagonal1 true");
+
                             }
                         } else {
                             count = 0;
@@ -309,7 +327,6 @@ class Board {
 
                                 if (count == 4) {
                                     match = true;
-                                    console.log("diagonal2 true")
                                 }
                             } else {
                                 count = 0;
@@ -321,7 +338,6 @@ class Board {
                 }
             }
         }
-        console.log(match);
         return match;
 
     }
@@ -331,14 +347,18 @@ class Board {
     thereIsAWinner(chip) {
 
         if (this.horizontalMatching(chip) || this.columnMatching(chip) || this.diagonalMatching(chip)) {
-            return true;
+            return this.winner = true;
 
         } else {
-            return false;
+            return this.winner = false;
         }
     }
 
-
+    endGame() {
+        this.chips.forEach(chip => {
+            chip.setMovable();
+        });
+    }
 
 
 }
