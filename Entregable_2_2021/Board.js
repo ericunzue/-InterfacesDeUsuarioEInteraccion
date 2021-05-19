@@ -36,7 +36,7 @@ class Board {
 
         })
 
-        if (this.turn) {
+        if (this.turn) { //Muestra quien juega
             this.drawTitle(25, 100, 'Red plays', '25px verdana', "#FF0000");
 
         } else {
@@ -66,12 +66,15 @@ class Board {
         for (let index = 0; index < this.chips.length; index++) {
             if (this.turn) {
 
-                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#FF0000")) {
+                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#FF0000") && (this.chips[index].isMovable() && (!this.chips[index].isPlaced()))) {
+                    this.changeChipsState(false); //Estas lineas no permiten que seleccionar otra ficha hasta no dejarla en el tablero
+                    this.chips[index].setMovable(true); //Vuelvo todas inamovibles excepto la que ya toqué
                     return this.chips[index];
                 }
             } else {
-                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#0000FF")) {
-
+                if (this.chips[index].isHitted(clickedX, clickedY) && (this.chips[index].getColour() == "#0000FF") && (this.chips[index].isMovable() && (!this.chips[index].isPlaced()))) {
+                    this.changeChipsState(false); //Estas lineas no permiten que seleccionar otra ficha hasta no dejarla en el tablero
+                    this.chips[index].setMovable(true); //Vuelvo todas inamovibles excepto la que ya toqué
                     return this.chips[index];
                 }
             }
@@ -112,6 +115,8 @@ class Board {
             for (let i = 0; i < 20; i++) {
                 let chip = new Chip(x, y, colour, image, 35, this.context);
                 this.chips.push(chip);
+                let pos = this.chips.indexOf(chip);
+
                 chip.drawImage();
                 y += 20;
             }
@@ -194,10 +199,11 @@ class Board {
             let y = emptySpace[2];
 
 
-
+            let pos = this.chips.indexOf(chip);
             chip.move(posX, posY);
-            chip.setMovable();
+            this.changeChipsState(true); //Si coloco una ficha al esto las vuelvo movibles
             this.board[x][y].setChip(chip);
+            this.chips[pos].setIsPlaced(); //Y a la que inserté la vuelvo inamovible.
             this.thereIsAWinner(chip);
             this.setTurn();
             this.moves--;
@@ -209,6 +215,13 @@ class Board {
         }
 
     }
+
+    changeChipsState(movable) {
+        this.chips.forEach(chip => {
+            chip.setMovable(movable);
+        });
+    }
+
 
     setTurn() { // cambia el valor del turno
 
@@ -286,18 +299,14 @@ class Board {
         for (let col = 0; col <= maxC; col++) { // busca en el plano de la diagonal primaria
             for (let row = maxC; row >= 0; row--) {
                 count = 0;
-
                 if (col == 0 || row == 0) {
                     let auxC = col;
                     let auxF = row;
                     while ((auxC <= (maxC)) && (auxF <= (maxF))) {
-
                         if (this.board[auxC][auxF].getChip() != null && this.board[auxC][auxF].getColour() == chip.getColour()) {
                             count++;
-
                             if (count == 4) {
                                 match = true;
-
                             }
                         } else {
                             count = 0;
@@ -310,21 +319,15 @@ class Board {
         }
 
         if (!match) { // busca en el plano de la diagonal secundaria
-
             for (let col = maxC; col >= 0; col--) {
-
                 for (let row = maxF; row >= 0; row--) {
                     count = 0;
-
                     if (col == 0 || row == 0) {
                         let auxC = col;
                         let auxF = row;
-
                         while ((auxC >= 0) && (auxF <= (maxF))) {
-
                             if (this.board[auxC][auxF].getChip() != null && this.board[auxC][auxF].getColour() == chip.getColour()) {
                                 count++;
-
                                 if (count == 4) {
                                     match = true;
                                 }

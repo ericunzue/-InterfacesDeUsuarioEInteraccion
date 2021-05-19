@@ -3,6 +3,7 @@ class Game {
         this.context = context;
         this.board = new Board(this.context);
         this.mode = '';
+        this.dragging = false;
         this.selectedChip = null;
         this.width = width;
         this.height = height;
@@ -16,17 +17,26 @@ class Game {
     }
 
     checkHit(clickedX, clickedY) {
+
+
         let selectedChip = this.board.getSelectedChip(clickedX, clickedY);
+
         if (selectedChip) {
-            this.mode = 'dragging';
+            this.dragging = true;
             this.selectedChip = selectedChip;
+            this.dragging = true;
+
             return true;
         }
+
         return false;
     }
     handlerDrag(clickedX, clickedY) {
-        if (this.mode === 'dragging' && this.selectedChip) {
+
+        if (this.dragging && this.selectedChip) {
+
             this.selectedChip.move(clickedX, clickedY);
+            this.dragging = true;
             this.draw();
         }
     }
@@ -47,6 +57,7 @@ class Game {
         if (this.selectedChip) {
             this.board.dropChip(this.selectedChip, clickedX, clickedY);
             this.selectedChip = null;
+            this.dragging = false
             this.draw();
 
         }

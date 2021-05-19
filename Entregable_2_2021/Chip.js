@@ -8,6 +8,7 @@
             this.radius = radius;
             this.context = context;
             this.movable = true;
+            this.placed = false;
         }
 
 
@@ -49,8 +50,12 @@
 
         }
 
-        setMovable() {
-            this.movable = false;
+        setMovable(movable) {
+            this.movable = movable;
+        }
+
+        isMovable() {
+            return this.movable;
         }
 
         getColour() {
@@ -61,5 +66,12 @@
             this.image = image;
         }
 
+        setIsPlaced() {
+            this.placed = true;
+        }
+
+        isPlaced() {
+            return this.placed;
+        }
 
     }
