@@ -1,5 +1,8 @@
 'use strict'
 document.addEventListener('DOMContentLoaded', () => {
+    alert("Site under construction. For a complete experience we recommend using chrome as your browser. Thanks!!");
+
+
     let countDownDate = new Date("Aug 14, 2021 22:00:00").getTime();
     setTimeout(showPage, 3000);
     setTimeout(slideInDown, 3000);
