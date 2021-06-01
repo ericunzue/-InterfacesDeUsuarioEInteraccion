@@ -1,8 +1,12 @@
 body {
-    background-color: #100B0D;
+    background: rgb(0, 0, 0);
     min-height: 100vh;
     max-width: 100%;
     overflow: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 * {
@@ -53,7 +57,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #100B0D;
+    background-color: rgb(0, 0, 0);
     right: 0;
     animation: heartRateIn 2.5s linear infinite;
 }
@@ -68,66 +72,84 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     height: 100%;
     left: -120%;
     animation: heartRateOut 2.5s linear infinite;
-    background: rgba(16, 11, 13, 1);
-    background: linear-gradient(left, rgba(16, 11, 13, 1) 0%, rgba(16, 11, 13, 1) 50%, rgba(16, 11, 13, 0) 100%);
-    background: linear-gradient(to right, rgb(16, 11, 13, 1) 0%, rgba(16, 11, 13, 1) 80%, rgba(16, 11, 13, 0) 100%);
+    background: rgba(rgb(0, 0, 0));
+    background: linear-gradient(to right, rgb(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
 }
 
 
 /* fin preloader */
 
-#main,
-#navbar {
-    display: block;
-    box-sizing: content-box;
-}
-
 
 /* INICIO HEADER */
 
-
-/* Solucionar barra para que se pueda ver la foto al hacer scroll */
-
 #navbar,
-.navbar-ul {
-    display: flex;
+#navbar-ul {
+    display: none;
     position: fixed;
+    padding: 0;
     top: 0;
-    height: 10vh;
-    z-index: 1;
-    perspective: 2px;
-    width: 100%;
+    height: 6vh;
+    z-index: 2;
+    width: 100vw;
+    border-bottom: 0;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    background-color: rgb(0, 0, 0, 0.5);
 }
 
 .nav-button {
-    box-sizing: border-box;
-    display: inline;
+    display: flex;
     position: relative;
-    /* border: 1px solid white; */
+    margin-left: 1em;
+    border-radius: 0.2em;
+    justify-content: center;
     align-items: center;
-    padding-left: 3rem;
-    /* margin: auto; */
 }
 
 .navbar-a {
-    /* border: 1px solid yellow; */
-    font-size: 2rem;
-    font-family: 'Big Shoulders Stencil Display', cursive;
-    text-align: center;
+    font-size: 1.2rem;
+    /* Agregada desde google fonts */
+    font-family: 'Big Shoulders Display', cursive;
+    color: rgb(244, 240, 240, 0.8);
     font-weight: 800;
-    color: black;
     text-decoration: none;
 }
 
 
 /* fin header */
 
+#main {
+    display: none;
+    box-sizing: content-box;
+}
+
+.countdown {
+    box-sizing: border-box;
+    position: fixed;
+    right: 0;
+    top: 60vh;
+    height: 10em;
+    width: 2em;
+    z-index: 1;
+    border: 0;
+    padding-right: 0.5em;
+    writing-mode: vertical-rl;
+    background-color: rgb(16, 11, 13);
+    font-family: 'Big Shoulders Display', cursive;
+    color: rgb(244, 240, 240, 0.9);
+    font-size: 1.1em;
+    font-weight: 500;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 0;
+    animation: shadow-pulse 1.5s infinite;
+}
+
 
 /* INICIO PARALLAX */
 
 .parallax-content {
-    display: block;
-    position: relative;
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
@@ -135,60 +157,129 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 }
 
 .parallax-section {
+    position: relative;
     height: 100vh;
     overflow: hidden;
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
 }
 
-.parallax-image {
+.parallax-image1,
+.parallax-image2 {
     position: absolute;
+    height: 100vh;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     /* Movemos la imagen hacia el fondo, logrando que al hacer scroll pareciera
   que se desplazara mas lentamente */
-    transform: translateZ(-2px) scale(2);
+    transform: translateZ(-1px) scale(1.5);
     z-index: -1;
-    background-image: url("../images/hero.jpg");
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
+    /* border: 1px solid blue; */
+}
+
+.parallax-image1 {
+    background-image: url("../images/back.jpg");
+}
+
+.parallax-image2 {
+    background-image: url("../images/hero1.jpg");
 }
 
 .parallax-logo {
     position: absolute;
-    top: 30%;
+    top: 70%;
     padding: 0;
     margin: 0%;
-    height: 40%;
-    width: 40%;
+    height: 20vh;
+    width: 38vw;
     background-image: url("../images/logo.png");
     background-position: center center;
     background-repeat: no-repeat;
-    background-position: 0px center;
     background-size: contain;
-    transform: translateZ(0px) scale(1);
     z-index: 1;
+    animation: slideInleft 1.5s ease-in 1s both;
 }
 
 .static {
-    height: 50vh;
-    background-color: grey;
+    display: flex;
+    position: relative;
+    justify-content: space-around;
+    height: 80vh;
+    background: rgb(111, 54, 16, 0.03);
+    perspective: 1000px;
+    z-index: 1;
+    /* border: 1px solid red; */
 }
 
-p {
-    margin: auto;
-    padding: 10%;
+
+/* CARDS */
+
+.item {
+    width: 20vw;
+    height: 40vh;
+    margin-top: 2em;
+    transform: rotateX(45deg) scale(0.8);
+    transition: 0.5s all ease;
+    box-shadow: 0px 60px 50px #555;
 }
 
-.content {
-    background-color: aliceblue;
-    display: block;
-    position: absolute;
+.item:hover {
+    cursor: pointer;
+    transform: rotate(0deg) scale(1);
+    transition: 0.5s all ease;
+    z-index: 400;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16);
 }
+
+.card {
+    border-radius: 4px;
+    background-color: rgb(0, 0, 0);
+}
+
+.card-image {
+    box-sizing: border-box;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20vw;
+    height: 40vh;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.card-image1 {
+    background-image: url("../images/wikusVandeMerwe.jpg");
+}
+
+.card-image2 {
+    background-image: url("../images/chris2.jpg");
+}
+
+.card-image3 {
+    background-image: url("../images/koobusVenter.jpg");
+}
+
+.card-image4 {
+    background-image: url("../images/obesandjo.jpg");
+}
+
+.desc {
+    padding: 15px;
+    font-family: 'Big Shoulders Display', cursive;
+    color: rgb(244, 240, 240, 1);
+    font-size: 1.1em;
+    font-weight: 500;
+    text-align: center;
+    background: rgb(16, 11, 13, 0.5);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+/* fin cards */
 
 
 /* fin parallax */
@@ -196,8 +287,9 @@ p {
 
 /* ANIMACIONES */
 
-
-/* Cambio el ancho del div de 100 a 0% */
+.slideInDown {
+    animation: slideInDown 1.5s 1.5s both;
+}
 
 @keyframes heartRateIn {
     0% {
@@ -235,6 +327,35 @@ p {
 @keyframes shine {
     100% {
         left: 125%;
+    }
+}
+
+@keyframes shadow-pulse {
+    0% {
+        box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes slideInleft {
+    0% {
+        transform: translateX(-100%);
+        visibility: visible;
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInDown {
+    0% {
+        transform: translateY(-100%);
+        visibility: visible;
+    }
+    100% {
+        transform: translateY(0);
     }
 }
 
