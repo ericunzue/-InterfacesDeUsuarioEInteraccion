@@ -18,6 +18,20 @@ html {
     display: none;
 }
 
+#notice {
+    display: inline-block;
+    width: 30vw;
+    height: 20vh;
+    background-color: white;
+    text-align: center;
+    color: red;
+}
+
+#acept {
+    width: 40px;
+    height: 40px;
+}
+
 
 /* PRELOADER */
 
