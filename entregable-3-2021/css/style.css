@@ -64,7 +64,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 }
 
 
-/* Div para crar el efecto de aparicion */
+/* Div para crear el efecto de aparicion */
 
 #fade-in {
     display: block;
@@ -85,9 +85,9 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     width: 100%;
     height: 100%;
     left: -120%;
-    animation: heartRateOut 2s linear infinite;
     background: rgba(rgb(0, 0, 0));
     background: linear-gradient(to right, rgb(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+    animation: heartRateOut 2s linear infinite;
 }
 
 
@@ -99,16 +99,16 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 #navbar,
 #navbar-ul {
     display: none;
-    position: fixed;
+    position: absolute;
     padding: 0;
     top: 0;
-    height: 6vh;
-    z-index: 2;
+    height: 10vh;
+    z-index: 5;
     width: 100vw;
     border-bottom: 0;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
-    background-color: rgb(0, 0, 0, 0.5);
+    /* background-color: rgb(0, 0, 0, 0.1); */
 }
 
 .nav-button {
@@ -124,7 +124,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     font-size: 1.2rem;
     /* Agregada desde google fonts */
     font-family: 'Big Shoulders Display', cursive;
-    color: rgb(244, 240, 240, 0.8);
+    color: rgb(244, 240, 240, 0.9);
     font-weight: 800;
     text-decoration: none;
 }
@@ -180,6 +180,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 .parallax-image2 {
     position: absolute;
     height: 100vh;
+    width: 100vw;
     top: 0;
     right: 0;
     bottom: 0;
@@ -190,7 +191,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     z-index: -1;
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     /* border: 1px solid blue; */
 }
 
@@ -199,7 +200,8 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 }
 
 .parallax-image2 {
-    background-image: url("../images/hero1.jpg");
+    background-image: url("../images/hero.jpg");
+    background-size: contain;
 }
 
 .parallax-logo {
@@ -217,24 +219,26 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     animation: slideInleft 1.5s ease-in 1s both;
 }
 
-.static {
-    display: flex;
+.static,
+.static2 {
+    display: block;
     position: relative;
     justify-content: center;
-    height: 80vh;
+    border-top: 1px;
+    height: 50vh;
+    padding: 2%;
     background: rgb(111, 54, 16, 0.03);
     perspective: 1000px;
     z-index: 1;
-    /* border: 1px solid red; */
 }
 
 
 /* CARDS */
 
 .item {
+    display: inline-block;
     width: 20vw;
     height: 40vh;
-    /* margin-top: 2em; */
     margin: 20px;
     transform: rotateX(45deg) scale(0.8);
     transition: 0.5s all ease;
@@ -242,7 +246,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 }
 
 .item:hover {
-    cursor: pointer;
+    /* cursor: pointer; */
     transform: rotate(0deg) scale(1);
     transition: 0.5s all ease;
     z-index: 400;
@@ -295,6 +299,132 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 
 
 /* fin cards */
+
+
+/* INICIO GALLERY */
+
+.static2 {
+    box-sizing: border-box;
+    perspective: 0px;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+}
+
+img {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.mySlides {
+    display: none;
+    width: 100vw;
+    height: 70vh;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.img1 {
+    background-image: url("../images/gallery1.jpeg");
+}
+
+.img2 {
+    background-image: url("../images/gallery2.jpg");
+}
+
+.img3 {
+    background-image: url("../images/gallery3.jpg")
+}
+
+.img4 {
+    background-image: url("../images/gallery4.jpg");
+}
+
+.img5 {
+    background-image: url("../images/gallery5.jpeg");
+}
+
+.img6 {
+    background-image: url("../images/gallery6.jpg");
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+
+/* next and previous buttons */
+
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+/* Number of the image */
+
+.imageNumber {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+}
+
+
+/* .caption-container {
+    text-align: center;
+    background-color: #222;
+    padding: 2px 16px;
+    color: white;
+} */
+
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.col {
+    float: left;
+    width: 16.66%;
+}
+
+.demo {
+    opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+    opacity: 1;
+}
+
+
+/* fin gallery */
 
 
 /* fin parallax */
