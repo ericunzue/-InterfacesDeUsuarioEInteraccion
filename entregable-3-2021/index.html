@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;500;800&display=swap" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
     <title>Document</title>
@@ -14,11 +15,7 @@
 
 <body>
 
-    <div id="notice">
-        <span>Site under construction. For a complete experience we recommend using chrome as your browser. Thanks!!</span>
-        <br>
-        <button id="acept">Ok</button>
-    </div>
+
     <!-- PRELOADER -->
     <div class="loader" id="loader">
         <div id="heart-rate">
@@ -41,12 +38,23 @@
             <li class="nav-button ">
                 <a class="navbar-a" href="">Algo mas</a>
             </li>
-            <li class="nav-button">
-                <a class="navbar-a" href="">Hamburguesa</a>
+            <li class="nav-button " id="hamburger-menu">
+                <div class="hamburger" id="menu">
+                    <div class="_layer -top"></div>
+                    <div class="_layer -mid"></div>
+                    <div class="_layer -bottom"></div>
+                </div>
+
             </li>
-
-
         </ul>
+        <div class="menuppal">
+            <ul>
+                <li><a href="#">Opcion 1</a></li>
+                <li><a href="#">Opcion 2</a></li>
+                <li><a href="#">Opcion 3</a></li>
+                <li><a href="#">Opcion 4</a></li>
+            </ul>
+        </div>
     </nav>
 
 
@@ -105,32 +113,62 @@
                 <div class="parallax-image2">
 
                 </div>
+                <div class="accordion-container">
+                    <h2>Accordion menu</h2>
+                    <button class="accordion" i>Section 1</button>
+                    <div class="panel">
+                        <div class="accordion-card">
+                            <div class="image">
+                                <img class="card-img" src="images/neillBlomkamp.jpg" alt="" srcset="">
+                            </div>
+                            <div class="details">
+                                <div class="center">
+                                    <h1>Director<br><span>Neill Blomkamp</span></h1>
+                                    <!-- <p>Lorem ipsum is simple dummy text on the printing and typesetting industry.</p> -->
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="accordion">Section 2</button>
+                    <div class="panel">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <button class="accordion">Section 3</button>
+                    <div class="panel">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <button class="accordion">Section 4</button>
+                    <div class="panel">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                </div>
             </div>
 
             <div class="parallax-section static2">
                 <div class="mySlides img1">
-                    <!-- <div class="imageNumber">1 / 6</div> -->
-
                 </div>
                 <div class="mySlides img2">
-                    <!-- <div class="imageNumber">2 / 6</div> -->
-
                 </div>
                 <div class="mySlides img3">
-                    <!-- <div class="imageNumber">3 / 6</div> -->
-
                 </div>
                 <div class="mySlides img4">
-                    <!-- <div class="imageNumber">3 / 6</div> -->
-
                 </div>
                 <div class="mySlides img5">
-                    <!-- <div class="imageNumber">3 / 6</div> -->
-
                 </div>
                 <div class="mySlides img6">
-                    <!-- <div class="imageNumber">3 / 6</div> -->
-
                 </div>
 
                 <a class="prev" onclick="plusSlides(-1)">❮</a>
@@ -168,7 +206,24 @@
     </div>
 
 
-
+    <div class="card">
+        <div class="image">
+            <img src="http://1.bp.blogspot.com/-EhPr4LXcywE/Udr594sPHTI/AAAAAAAAAJ4/Tv4y4CBLTPM/s400/Cristina-Otero-2.jpg" />
+        </div>
+        <div class="details">
+            <div class="center">
+                <h1>Someone famous<br><span>team leader</span></h1>
+                <p>Lorem ipsum is simple dummy text on the printing and typesetting industry.</p>
+                <ul>
+                    <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 
     <script src="index.js"></script>
