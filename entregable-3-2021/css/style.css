@@ -112,12 +112,17 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 }
 
 .navbar-a {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     /* Agregada desde google fonts */
     font-family: 'Big Shoulders Display', cursive;
     color: rgb(244, 240, 240, 0.9);
     font-weight: 800;
     text-decoration: none;
+}
+
+.isActive,
+.navbar-a:hover {
+    color: rgb(241, 55, 43, 0.9);
 }
 
 #hamburger-menu {
@@ -314,6 +319,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     position: relative;
     top: 10%;
     width: 60%;
+    /* height: 100%; */
     margin: auto;
     text-align: center;
     z-index: 3;
@@ -329,7 +335,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
     border: none;
     outline: none;
     font-size: 30px;
-    transition: 0.6s;
+    transition: 0.2s;
     font-family: 'Big Shoulders Display', cursive;
 }
 
@@ -352,19 +358,23 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 }
 
 .panel {
-    position: relative;
+    /* display: inline; */
+    position: absolute;
+    /* padding: 0 18px; */
+    width: 100%;
     text-align: left;
     background-color: rgb(22, 33, 39, 0.9);
     max-height: 0;
     overflow: hidden;
-    transition: max-height .5s ease-in;
+    transition: max-height .2s ease-in-out;
 }
 
-.panel .accordion-text {
+.accordion-text {
     display: inline-block;
     position: absolute;
     padding-top: 1em;
     margin-top: 1em;
+    width: 70%;
     /* border: 1px solid white; */
     color: rgb(244, 240, 240, 0.9);
     font-size: 20px;
@@ -374,6 +384,7 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 h2 {
     background-color: rgb(22, 33, 39, 0.8);
     color: rgb(244, 240, 240, 0.9);
+    padding: .2em;
     margin-top: 1em;
     font-family: 'Big Shoulders Display', cursive;
     font-size: 30px;
@@ -401,7 +412,7 @@ h2 {
     transition: .5s;
 }
 
-.accordion-card:hover .image .card-img {
+.accordion-card:hover .image {
     opacity: .5;
     /* transform: translateX(30%); */
     /*100%*/
@@ -493,7 +504,6 @@ h2 {
     padding: 2%;
     background: rgb(111, 54, 16, 0.03);
     perspective: 1000px;
-    z-index: 1;
 }
 
 

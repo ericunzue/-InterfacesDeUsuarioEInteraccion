@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlides(slideIndex);
     openAccordion();
     setTimeout(countDown, 2000);
+    changeMenuColor();
 
 });
 
@@ -108,10 +109,10 @@ function openAccordion(params) {
                         accordion[x].nextElementSibling.style.maxHeight = null;
                     }
                 }
-                btn.classList.add("active");
                 btn.classList.add("flipInX");
+                btn.classList.add("active");
 
-                btn.nextElementSibling.style.maxHeight = 50 + "%";
+                btn.nextElementSibling.style.maxHeight = panel.scrollHeight + "%";
             }
 
         });
@@ -120,5 +121,22 @@ function openAccordion(params) {
     }
 
 
+
+}
+
+function changeMenuColor() {
+    let arrBtn = document.getElementsByClassName("navbar-a");
+    let btn;
+
+    for (let index = 0; index < arrBtn.length; index++) {
+        arrBtn[index].addEventListener("click", () => {
+            btn = arrBtn[index];
+            for (let x = 0; x < arrBtn.length; x++) {
+                arrBtn[x].classList.remove("isActive");
+
+            }
+            btn.classList.add("isActive");
+        });
+    }
 
 }
