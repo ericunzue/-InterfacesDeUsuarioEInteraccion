@@ -292,14 +292,14 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 .parallax-image2 {
     background-image: url("../images/hero.jpg");
     background-size: contain;
-    filter: blur(0.5px);
+    filter: blur(1px);
 }
 
 .parallax-logo {
     position: absolute;
     top: 70%;
     padding: 0;
-    margin: 0%;
+    margin: 0;
     height: 20vh;
     width: 38vw;
     background-image: url("../images/logo.png");
@@ -312,26 +312,25 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 
 .accordion-container {
     position: relative;
-    height: 80%;
-    width: 80%;
+    top: 10%;
+    width: 60%;
     margin: auto;
     text-align: center;
-    border: 1px solid red;
     z-index: 3;
     perspective: 2000px;
 }
 
 .accordion {
-    background-color: rgb(22, 33, 39, 0.6);
+    background-color: rgb(22, 33, 39, 0.9);
     color: rgb(244, 240, 240, 0.9);
     cursor: pointer;
-    padding: 18px;
+    padding: 10px;
     width: 100%;
     border: none;
-    text-align: left;
     outline: none;
-    font-size: 15px;
+    font-size: 30px;
     transition: 0.6s;
+    font-family: 'Big Shoulders Display', cursive;
 }
 
 .active,
@@ -354,31 +353,46 @@ El resto loa declaramos como elementos de bloque con posicion absoluta
 
 .panel {
     position: relative;
-    background-color: rgb(22, 33, 39, 0.6);
+    text-align: left;
+    background-color: rgb(22, 33, 39, 0.9);
     max-height: 0;
-    padding: 1em;
     overflow: hidden;
-    transition: max-height 0.5s ease-in-out;
+    transition: max-height .5s ease-in;
+}
+
+.panel .accordion-text {
+    display: inline-block;
+    position: absolute;
+    padding-top: 1em;
+    margin-top: 1em;
+    /* border: 1px solid white; */
+    color: rgb(244, 240, 240, 0.9);
+    font-size: 20px;
+    word-spacing: .1em;
 }
 
 h2 {
-    background-color: rgb(22, 33, 39, 0.6);
+    background-color: rgb(22, 33, 39, 0.8);
     color: rgb(244, 240, 240, 0.9);
     margin-top: 1em;
+    font-family: 'Big Shoulders Display', cursive;
+    font-size: 30px;
 }
 
 .accordion-card {
+    display: inline-block;
     position: relative;
     transform: translate(0%, 0%);
-    /* margin: auto; */
     width: 20%;
+    margin: 1em;
+    border-radius: .5em;
     background: #000;
-    z-index: 3;
 }
 
 .accordion-card .image {
     width: 100%;
     height: 100%;
+    border-radius: .5em;
     overflow: hidden;
 }
 
@@ -402,6 +416,7 @@ h2 {
     height: 100%;
     background: rgb(70, 73, 90, .2);
     box-shadow: 10px 0px 40px rgb(22, 33, 39);
+    border-radius: .5em;
     transition: .5s;
     transform-origin: left;
     transform: perspective(2000px) rotateY(-90deg);
@@ -415,7 +430,7 @@ h2 {
     padding: 10%;
     width: 80%;
     text-align: center;
-    background: #fff;
+    background: rgb(244, 240, 240, 0.7);
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -426,12 +441,12 @@ h2 {
     padding: 0;
     color: #ff3636;
     line-height: 20px;
-    font-size: 20px;
+    font-size: 14px;
     text-transform: uppercase;
 }
 
 .accordion-card .details .center h1 span {
-    font-size: 14px;
+    font-size: 20px;
     color: #262626;
 }
 
@@ -449,7 +464,7 @@ h2 {
 
 .accordion-card .details .center ul li {
     list-style: none;
-    margin: 0 5px;
+    margin: 5px;
     float: left;
 }
 
@@ -469,6 +484,7 @@ h2 {
 }
 
 .static {
+    box-sizing: border-box;
     display: block;
     position: relative;
     justify-content: center;
@@ -482,6 +498,11 @@ h2 {
 
 
 /* CARDS */
+
+.card-container {
+    margin-left: 3em;
+    /* padding: 1em; */
+}
 
 .item {
     display: inline-block;

@@ -111,7 +111,7 @@ function openAccordion(params) {
                 btn.classList.add("active");
                 btn.classList.add("flipInX");
 
-                btn.nextElementSibling.style.maxHeight = 100 + "%";
+                btn.nextElementSibling.style.maxHeight = 50 + "%";
             }
 
         });
